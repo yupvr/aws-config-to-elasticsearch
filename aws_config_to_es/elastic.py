@@ -35,18 +35,16 @@ class ElasticSearch(object):
         json_message_dict["addedIso"] = datetime.datetime.now().isoformat()
         json_message_dict["updatedIso"] = json_message_dict["addedIso"]
 
-        json_message = json.dumps(json_message_dict)
-
         self.log.info("adding item into ES: " + str(json_message_dict))
         if index_id:
             response = requests.put(self.connections + "/" +
                                     index_name + "/" +
                                     doc_type + "/" +
-                                    index_id, data=json_message)
+                                    index_id, json=json_message_dict)
         else:
             response = requests.post(self.connections + "/" +
                                      index_name + "/" +
-                                     doc_type, data=json_message)
+                                     doc_type, json=json_message_dict)
 
         self.log.info(
             "response: " + str(
